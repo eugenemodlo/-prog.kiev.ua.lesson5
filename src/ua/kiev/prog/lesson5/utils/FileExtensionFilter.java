@@ -10,6 +10,11 @@ public class FileExtensionFilter implements FileFilter {
         super();
         this.acceptedFileExtensions = array;
     }
+    public FileExtensionFilter(String fileExtension) {
+        super();
+        this.acceptedFileExtensions = new String[] {fileExtension};
+    }
+
 
     private boolean checkExtension(String ext) {
         for (String acceptedExtension : acceptedFileExtensions) {
