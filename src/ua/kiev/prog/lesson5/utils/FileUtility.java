@@ -1,30 +1,34 @@
 package ua.kiev.prog.lesson5.utils;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
-import java.util.SortedSet;
 
 public class FileUtility {
     public FileUtility() {
     }
 
-//    public File fileCompareByWord(File stFile, File ndFile, String outFileFullPath) {
-//        File outFile = new File(outFileFullPath);
-//
-//        try (FileReader firstFile = new FileReader(stFile);
-//             FileReader secondFile = new FileReader(ndFile)) {
-//
-//            List<String> firstList = Files.readAllLines(new Path stFile.getPath());
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return outFile;
-//    }
+    public File fileCompareByWord(String stFile, String ndFile, String outFileFullPath) {
+
+        File outFile = new File(outFileFullPath);
+
+        try {
+            List<String> firstList = Files.readAllLines(Paths.get(stFile));
+            List<String> secondList = Files.readAllLines(Paths.get(ndFile));
+
+            List<String> matchingWords = firstList.stream().filter(secondList::contains).toList();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return outFile;
+    }
 
     public void CopyFiles(String inputPath, String outputPath, String fileExtension) {
         FileExtensionFilter filter = new FileExtensionFilter(fileExtension);
