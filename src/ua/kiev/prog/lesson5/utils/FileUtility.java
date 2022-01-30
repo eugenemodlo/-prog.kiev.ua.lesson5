@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -13,21 +14,8 @@ public class FileUtility {
     public FileUtility() {
     }
 
-    public File fileCompareByWord(String stFile, String ndFile, String outFileFullPath) {
-
-        File outFile = new File(outFileFullPath);
-
-        try {
-            List<String> firstList = Files.readAllLines(Paths.get(stFile));
-            List<String> secondList = Files.readAllLines(Paths.get(ndFile));
-
-            List<String> matchingWords = firstList.stream().filter(secondList::contains).toList();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return outFile;
+    public void writeFileWithSameWord(String firstFile, String secondFile, String outputFile) throws IOException {
+        Files.write(Paths.get(outputFile),compareByWord(firstFile, secondFile));
     }
 
     public void CopyFiles(String inputPath, String outputPath, String fileExtension) {
@@ -48,7 +36,7 @@ public class FileUtility {
             try (FileInputStream fis = new FileInputStream(inputFile);
                  FileOutputStream fos = new FileOutputStream(outputFile)) {
                 byte[] buffer = new byte[1024];
-                int byteRead = 0;
+                int byteRead;
 
                 while ((byteRead = fis.read(buffer)) > 0) {
                     fos.write(buffer, 0, byteRead);
@@ -59,6 +47,7 @@ public class FileUtility {
                 e.printStackTrace();
             }
         }
+
         return false;
     }
 
@@ -87,4 +76,19 @@ public class FileUtility {
         }
         return false;
     }
+
+    private List<String> compareByWord(String stFile, String ndFile) {
+
+        try {
+            List<String> firstList = Files.readAllLines(Paths.get(stFile));
+            List<String> secondList = Files.readAllLines(Paths.get(ndFile));
+
+            return firstList.stream().filter(secondList::contains).toList();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return new ArrayList<>();
+    }
+
 }
